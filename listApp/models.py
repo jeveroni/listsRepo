@@ -17,6 +17,7 @@ class Item(models.Model):
     #Possibly has a type as well, like Bakery etc if needed, or on the to do list it could be person based like jev/both/katie? (Future change)
     #Date? Required due date maybe? (Future change)
     #Also maybe a checked boolean, so we know if it's ticked or not (But can still be on the list?) (Future change)
+    #Created by (If we ever add users?) (Future change)
     name = models.CharField(max_length=50)
     created_date = models.DateTimeField(default=timezone.now)
     list = models.ForeignKey( List, on_delete=models.CASCADE)
