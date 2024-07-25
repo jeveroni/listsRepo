@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import List
+from .models import List, Item
 
 # Create your views here.
 def list_list(request):
@@ -8,4 +8,5 @@ def list_list(request):
 
 def list_detail( request, pk):
     list = get_object_or_404( List, pk=pk)
-    return render(request, 'listApp/list_detail.html', {'list': list})
+    items = Item.objects.filter( list_id = pk )
+    return render(request, 'listApp/list_detail.html', {'list': list, 'items': items})

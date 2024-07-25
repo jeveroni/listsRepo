@@ -3,5 +3,11 @@
 {% block content %}
     <article class="list">
         <h2>{{ list.name }}</h2>
+        <br>
+        <ul>
+            {% for item in items %}
+                <li><a href="">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
     </article>
 {% endblock %}
