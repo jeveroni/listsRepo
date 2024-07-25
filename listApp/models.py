@@ -8,6 +8,10 @@ class List(models.Model):
     #Maybe have a specific list type which is like to do or to be bought etc and maybe that has a different vibe? (Future change?)
     name = models.CharField(max_length=50)
     
+    def countItems(self):
+        itemsList =  Item.objects.filter( list = self )
+        return len( itemsList)
+    
     def __str__(self):
         return self.name
     
