@@ -6,7 +6,12 @@
         <br>
         <ul>
             {% for item in items %}
-                <li><a href="">{{ item.name }}</a></li>
+                <li>
+                    <a href="">{{ item.name }}</a>
+                    <a class="btn btn-secondary" href="{% url 'item_edit' pk=item.id %}">
+                      {% include './icons/pencil-fill.svg' %}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     </article>
