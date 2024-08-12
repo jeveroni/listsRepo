@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2> New List </h2>
-    <form method="POST" class="list-form">{% csrf_token %}
+    <form method="POST" class="item-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-secondary">Save</button>
     </form>

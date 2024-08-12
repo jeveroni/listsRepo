@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import List, Item
-from.forms import ItemForm
+from.forms import ListForm, ItemForm
 from django.utils import timezone
 from django.shortcuts import redirect
 from django.http import HttpResponse, JsonResponse
@@ -18,6 +18,17 @@ def list_detail( request, pk):
     items = Item.objects.filter( list_id = pk )
     return render(request, 'listApp/list_detail.html', {'list': list, 'items': items})
 
+def list_new( request ):
+    if request.method == "POST":
+        form = ListForm(request.POST)
+        if form.is_valid():
+            list = form.save(commit=False)
+            list.save()
+            return redirect('list_detail', pk = list.id)   
+    else:
+        form = ListForm()
+    return render(request, 'listApp/list_new.html', {'form': form})
+
 def item_new( request, pk ):
     if request.method == "POST":
         form = ItemForm(request.POST)
@@ -33,12 +44,16 @@ def item_new( request, pk ):
 
 def item_edit(request, pk):
     item = get_object_or_404(Item, pk=pk)
+    listPK = item.list.pk
     if request.method == "POST":
-        form = ItemForm(request.POST, instance=item)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.save()
-            return redirect('list_detail', pk=item.list.pk)
+        if 'save' in request.POST:
+            form = ItemForm(request.POST, instance=item)
+            if form.is_valid():
+                item = form.save(commit=False)
+                item.save()
+        elif 'delete' in request.POST:
+            item.delete()
+        return redirect('list_detail', pk=listPK)
     else:
         form = ItemForm(instance=item)
     return render(request, 'listApp/item_edit.html', {'form': form})
