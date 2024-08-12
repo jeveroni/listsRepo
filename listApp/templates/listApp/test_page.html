@@ -1,0 +1,39 @@
+{% extends 'listApp/base.html' %}
+
+{% block content %}
+<ul>
+    {% for item in items %}
+    <li>
+        <input type="checkbox" id="item{{ item.id }}" data-id="{{ item.id }}" name="itemCheckbox" {% if item.completed %}checked{% endif %}>
+        <label for="item{{ item.id }}">{{ item.name }}</label>
+    </li>
+    {% endfor %}
+</ul>
+
+<script>
+    $(document).ready(function() {
+        $('input[type="checkbox"]').on('change', function() {
+            var checkbox = $(this);
+            var isChecked = checkbox.is(':checked');
+            var itemId = checkbox.data('id');
+
+            $.ajax({
+                url: '/update-item/',
+                type: 'PUT',
+                data: JSON.stringify({
+                    'id': itemId,
+                    'checked': isChecked
+                }),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Item ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
+                },
+                error: function(response) {
+                    console.error('An error occurred.');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

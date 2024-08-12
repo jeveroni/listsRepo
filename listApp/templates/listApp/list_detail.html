@@ -7,12 +7,36 @@
         <ul>
             {% for item in items %}
                 <li>
-                    <a href="">{{ item.name }}</a>
-                    <a class="btn btn-secondary" href="{% url 'item_edit' pk=item.id %}">
-                      {% include './icons/pencil-fill.svg' %}
-                    </a>
+                    <input type="checkbox" id="item{{ item.id }}" data-id="{{ item.id }}" name="itemCheckbox" {% if item.completed %}checked{% endif %}>
+                    <label for="item{{ item.id }}"><a href="{% url 'item_edit' pk=item.pk %}">{{ item.name }}</a></label>
                 </li>
             {% endfor %}
         </ul>
     </article>
+
+    <script>
+        $(document).ready(function() {
+            $('input[type="checkbox"]').on('change', function() {
+                var checkbox = $(this);
+                var isChecked = checkbox.is(':checked');
+                var itemId = checkbox.data('id');
+    
+                $.ajax({
+                    url: '/update-item/',
+                    type: 'PUT',
+                    data: JSON.stringify({
+                        'id': itemId,
+                        'checked': isChecked
+                    }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log('Item ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
+                    },
+                    error: function(response) {
+                        console.error('An error occurred.');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
