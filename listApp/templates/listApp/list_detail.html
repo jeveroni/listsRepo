@@ -11,6 +11,9 @@
                     <label for="item{{ item.id }}"><a href="{% url 'item_edit' pk=item.pk %}">{{ item.name }}</a></label>
                 </li>
             {% endfor %}
+            <li>
+                <a href ="{% url 'item_new' pk=list.pk %}"> Add New Item</a>
+            </li>
         </ul>
     </article>
 

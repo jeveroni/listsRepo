@@ -18,17 +18,18 @@ def list_detail( request, pk):
     items = Item.objects.filter( list_id = pk )
     return render(request, 'listApp/list_detail.html', {'list': list, 'items': items})
 
-def item_new( request ):
+def item_new( request, pk ):
     if request.method == "POST":
         form = ItemForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
             item.created_date = timezone.now()
+            item.list = List.objects.get(pk=pk)
             item.save()
             return redirect('list_detail', pk = item.list.id)   
     else:
         form = ItemForm()
-    return render(request, 'listApp/item_edit.html', {'form': form})
+    return render(request, 'listApp/item_new.html', {'form': form})
 
 def item_edit(request, pk):
     item = get_object_or_404(Item, pk=pk)
