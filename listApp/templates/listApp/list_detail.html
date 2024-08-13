@@ -25,20 +25,20 @@
                 var itemId = checkbox.data('id');
 
                 var confirmationMessage = isChecked 
-                ? 'Are you sure you want to mark this task as completed?'
-                : 'Are you sure you want to mark this task as not completed?';
+                ? 'Are you sure you want to mark this item as completed?'
+                : 'Are you sure you want to mark this item as not completed?';
                 
                 if (confirm(confirmationMessage)) {
                     $.ajax({
-                        url: '/update-task/',
+                        url: '/update-item/',
                         type: 'PUT',
                         data: JSON.stringify({
-                            'id': taskId,
+                            'id': itemId,
                             'checked': isChecked
                         }),
                         contentType: 'application/json',
                         success: function(response) {
-                            console.log('Task ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
+                            console.log('Item ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
                         },
                         error: function(response) {
                             console.error('An error occurred.');
