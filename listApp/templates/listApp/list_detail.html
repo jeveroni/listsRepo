@@ -23,22 +23,30 @@
                 var checkbox = $(this);
                 var isChecked = checkbox.is(':checked');
                 var itemId = checkbox.data('id');
-    
-                $.ajax({
-                    url: '/update-item/',
-                    type: 'PUT',
-                    data: JSON.stringify({
-                        'id': itemId,
-                        'checked': isChecked
-                    }),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        console.log('Item ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
-                    },
-                    error: function(response) {
-                        console.error('An error occurred.');
-                    }
-                });
+
+                var confirmationMessage = isChecked 
+                ? 'Are you sure you want to mark this task as completed?'
+                : 'Are you sure you want to mark this task as not completed?';
+                
+                if (confirm(confirmationMessage)) {
+                    $.ajax({
+                        url: '/update-task/',
+                        type: 'PUT',
+                        data: JSON.stringify({
+                            'id': taskId,
+                            'checked': isChecked
+                        }),
+                        contentType: 'application/json',
+                        success: function(response) {
+                            console.log('Task ' + response.id + ' is now ' + (response.completed ? 'completed' : 'not completed'));
+                        },
+                        error: function(response) {
+                            console.error('An error occurred.');
+                        }
+                    });
+                } else {
+                    checkbox.prop('checked', !isChecked);
+                }
             });
         });
     </script>
