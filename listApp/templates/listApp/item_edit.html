@@ -7,4 +7,19 @@
         <button type="submit" name ="save" class="save btn btn-secondary">Save</button>
         <button type="submit" name ="delete" class="save btn btn-secondary">Delete</button>
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".item-form").addEventListener("submit", function(event) {
+                var clickedButton = event.submitter;
+    
+                if (clickedButton && clickedButton.name === "delete") {
+                    var userConfirmed = confirm("Are you sure you want to delete this item?");
+                    if (!userConfirmed) {
+                        event.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

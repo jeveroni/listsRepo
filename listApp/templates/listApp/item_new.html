@@ -6,4 +6,15 @@
         {{ form.as_p }}
         <button type="submit" class="save btn btn-secondary">Save</button>
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Django makes the form itself, so id_name is what we go with
+            var nameInput = document.getElementById("id_name");
+            if (nameInput) {
+                nameInput.focus();
+                nameInput.placeholder = "Start typing your item here...";
+            }
+        });
+    </script>
 {% endblock %}
