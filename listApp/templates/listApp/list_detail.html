@@ -4,10 +4,10 @@
     <article class="list">
         <h2>{{ list.name }}</h2>
         <br>
-        <ul>
+        <ul id="itemList">
             {% for item in items %}
                 <li>
-                    <input type="checkbox" id="item{{ item.id }}" data-id="{{ item.id }}" name="itemCheckbox" {% if item.completed %}checked{% endif %}>
+                    <input type="checkbox" id="item{{ item.id }}" data-id="{{ item.id }}" name="itemCheckbox" {% if item.completed %}checked{% endif %} onchange="reorderList(this)">
                     <label for="item{{ item.id }}"><a href="{% url 'item_edit' pk=item.pk %}">{{ item.name }}</a></label>
                 </li>
             {% endfor %}
@@ -18,6 +18,25 @@
     </article>
 
     <script>
+        function reorderList(checkbox) {
+            var listItem = checkbox.parentElement;
+            var list = document.getElementById("itemList");
+            var addNewItem = list.querySelector('li:last-child'); 
+        
+            if (checkbox.checked) {
+                list.insertBefore(listItem, addNewItem);
+            } else {
+                var firstCheckedItem = Array.from(list.children).find(function(item) {
+                    return item.querySelector('input[type="checkbox"]').checked;
+                });
+                if (firstCheckedItem) {
+                    list.insertBefore(listItem, firstCheckedItem);
+                } else {
+                    list.insertBefore(listItem, addNewItem);
+                }
+            }
+        }
+
         $(document).ready(function() {
             $('input[type="checkbox"]').on('change', function() {
                 var checkbox = $(this);
