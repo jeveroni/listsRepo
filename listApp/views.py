@@ -15,7 +15,7 @@ def list_list(request):
 
 def list_detail( request, pk):
     list = get_object_or_404( List, pk=pk)
-    items = Item.objects.filter( list_id = pk )
+    items = Item.objects.filter( list_id = pk ).order_by('completed')
     return render(request, 'listApp/list_detail.html', {'list': list, 'items': items})
 
 def list_new( request ):
